@@ -1,23 +1,22 @@
 {
-  "name": "nodejs-complete-guide",
+  "name": "shop-app",
   "version": "1.0.0",
-  "description": "Complete Node.js Guide",
+  "description": "Shop App",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "nodemon app.js"
   },
-  "author": "Maximilian Schwarzmüller",
+  "author": "BahaaAY",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^3.0.1"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "express-handlebars": "^3.0.0",
-    "pug": "^2.0.3"
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.0",
+    "pug": "^3.0.2"
   }
 }
