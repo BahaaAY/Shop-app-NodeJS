@@ -19,6 +19,7 @@ const getProductsFromFile = cb => {
 
 module.exports = class Product {
   constructor(title, imageUrl, description, price) {
+    this.id = Math.floor(Math.random()*20000000000);
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -36,5 +37,20 @@ module.exports = class Product {
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
+  }
+
+  static findProductByID(id, cb)
+  {
+    getProductsFromFile((products)=>{
+      products.forEach(p => {
+        if(p.id == id)
+        {
+          cb(p);
+          return false; 
+        }
+        
+      });
+      
+    });
   }
 };
