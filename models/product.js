@@ -18,8 +18,14 @@ const getProductsFromFile = cb => {
 };
 
 module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
-    this.id = Math.floor(Math.random()*20000000000);
+  constructor(id,title, imageUrl, description, price) {
+    if(id)
+    {
+      this.id =id;
+    }else
+    {
+      this.id = Math.floor(Math.random()*20000000000);
+    }
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -37,6 +43,33 @@ module.exports = class Product {
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
+  }
+  static editProduct(editedProduct, successCB, errCB)
+  {
+    this.fetchAll((products)=>{
+      let newProducts = [...products];
+      var productExists = false;
+      for(let i=0; i<newProducts.length;i++)
+      {
+        if(newProducts[i].id == editedProduct.id)
+        {
+          newProducts[i] = {...editedProduct};
+          productExists = true;
+          break;
+        }
+      }
+      if(productExists)
+      {
+        fs.writeFile(p, JSON.stringify(newProducts), err => {
+          console.log(err);
+        });
+        successCB();
+      }else
+      {
+        errCB('Product Not Found!');
+      }
+    });
+    
   }
 
   static findProductByID(id, cb)
