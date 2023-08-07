@@ -71,6 +71,21 @@ module.exports = class Product {
     });
     
   }
+  
+  static deleteProductByID(id, cb)
+  {
+    this.fetchAll((products)=>{
+      let newProducts = [...products];
+      console.log('Products: ', newProducts);
+      let result = newProducts.filter((product) => product.id !=id);
+      console.log('Filtered Products: ', result);
+      fs.writeFile(p, JSON.stringify(result), err => {
+        console.log(err);
+      });
+      cb();
+
+    })
+  }
 
   static findProductByID(id, cb)
   {
