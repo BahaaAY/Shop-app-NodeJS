@@ -1,7 +1,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findProductByID } = require('./product');
+const { findProductByID, deleteProductByID } = require('./product');
 
 const p = path.join(
     path.dirname(process.mainModule.filename),
@@ -19,6 +19,10 @@ module.exports = class Cart {
             let cart = { products: [] };
             if (!err) {
                 cart = JSON.parse(fileContent);
+                if(!cart.products)
+                {
+                    cart = { products: [] };
+                }
                 console.log("Cart: ", cart);
             } else {
                 console.log('Error Reading Cart.json', err.message);
@@ -57,6 +61,32 @@ module.exports = class Cart {
         });
 
     }
+    static deleteProductByID(id, successCB,errCB)
+    {
+        fs.readFile(p, (err, fileContent) => {
+
+            if(err)
+            {
+                console.log('Error Reading Cart!');
+                errCB();
+            }else
+            {
+                let cart = JSON.parse(fileContent);
+                console.log("D Cart: ", cart);
+                let updatedCart = cart.products.filter(product => product.id != id);
+                console.log('New Cart D: ', updatedCart);
+                fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
+                    console.log('Error Writing Cart: ', err);
+                    errCB();
+                });
+                successCB();
+
+            }
+
+        });
+
+    }
+
 
 
 
