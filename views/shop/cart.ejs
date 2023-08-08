@@ -6,21 +6,30 @@
     <body>
         <%- include('../includes/navigation.ejs') %>
             <main>
-                <% if (cartProducts.length> 0) {  %>
+                <% if (cartProducts.length> 0) { %>
                     <ul>
-                        <% for( let i=0; i < cartProducts.length; i++ ) { 
-                            
-                            %>
+                        <% for( let i=0; i < cartProducts.length; i++ ) { %>
                             <li>
-                                <%= cartProducts[i].productData.title %> (<%=
-                                        cartProducts[i].qty %>)
+
+                                <p>
+                                    <%= cartProducts[i].productData.title %> (<%= cartProducts[i].qty %>)
+                                </p>
+                                <form method="POST" action="/cart-delete-item">
+                                    <input type="hidden" name="productID" value="<%= cartProducts[i].productData.id %>">
+                                    <button class="btn" type="submit">Delete</button>
+                                </form>
+
+
                             </li>
                             <% } %>
                     </ul>
                     <hr>
-                   <h1>
-                    Total: <%= cartTotal %> $</h1> 
-                    
-                    <% } %>
+                    <h1>
+                        Total: <%= cartTotal %> $</h1>
+
+                    <% }else{ %>
+                        <h1>No Products in Cart!</h1>
+                        <%}%>
+
             </main>
             <%- include('../includes/end.ejs') %>

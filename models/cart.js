@@ -69,14 +69,18 @@ module.exports = class Cart {
     static getCartPrice(cartProducts)
     {
         var total = 0.0;
-        for(let product of cartProducts)
+        if(cartProducts.length>0)
         {
-            total =total + +product.productData.price * product.qty;
+            for(let product of cartProducts)
+            {
+                total =total + +product.productData.price * product.qty;
+            }
         }
+        
         return total;
     }
 
-    static addProduct(id) {
+    static addProduct(id,cb) {
 
         fs.readFile(p, (err, fileContent) => {
             //Get old CART if exists else get empty cart
@@ -99,7 +103,8 @@ module.exports = class Cart {
                     cart.products[i].qty += 1;
                     productExists = true;
                     fs.writeFile(p, JSON.stringify(cart), (err) => {
-                        console.log('Error Writing Cart: ', err.message);
+                        console.log('Error Writing Cart: ', err);
+                        cb();
                     });
                     break;
                 }
@@ -116,6 +121,7 @@ module.exports = class Cart {
                     console.log("New Cart: ", cart);
                     fs.writeFile(p, JSON.stringify(cart), (err) => {
                         console.log('Error Writing Cart: ', err);
+                        cb();
                     });
                 });
 
@@ -131,9 +137,14 @@ module.exports = class Cart {
                 console.log('Error Reading Cart!');
                 errCB();
             } else {
-                let cart = JSON.parse(fileContent);
+                let cart = { products: [] };
+                cart = JSON.parse(fileContent);
+                if (!cart.products) {
+                    cart = { products: [] };
+                }
+                console.log("Cart: ", cart);
                 console.log("D Cart: ", cart);
-                let updatedCart = cart.products.filter(product => product.id != id);
+                let updatedCart = {products:cart.products.filter(product => product.id != id)};
                 console.log('New Cart D: ', updatedCart);
                 fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
                     console.log('Error Writing Cart: ', err);
